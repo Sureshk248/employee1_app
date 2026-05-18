@@ -12,8 +12,11 @@ from crud.create import create_employee
 from crud.update import update_employee
 from crud.delete import delete_employee
 from crud.read import read_employee
+import traceback
 
 app = Flask(__name__)
+
+os.makedirs("uploads", exist_ok=True)
 
 host = "172.17.4.178"
 port = 24
