@@ -18,8 +18,8 @@ app = Flask(__name__)
 host = "172.17.4.178"
 port = 24
 
-user = "devsftp"
-password = "Dev$!264"
+user = "user"
+password = "password"
 
 
 @app.route("/")
@@ -69,11 +69,8 @@ def uploaded_file(pernr):
 
             return Response(memory_file.getvalue(), mimetype=mime_type)
 
-        return "File not found"
-
     except Exception as e:
-
-        return str(e)
+        pass
 
     finally:
 
@@ -81,6 +78,20 @@ def uploaded_file(pernr):
             ftp.quit()
         except:
             pass
+
+    # LOCAL FALLBACK
+    try:
+
+        for file1 in os.listdir("uploads"):
+
+            if file1.startswith(pernr):
+
+                return send_from_directory("uploads", file1)
+
+    except Exception as e:
+        pass
+
+    return "File not found"
 
 
 @app.route("/submit", methods=["POST"])
@@ -121,4 +132,4 @@ def submit():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
